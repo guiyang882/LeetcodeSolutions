@@ -93,7 +93,7 @@ public:
 将数组分为长度相同的两段，分别求出这两段的最大子数组的和，同时找出最大子数组跨越了中间点的位置的和。
 1. nums[1:n]的最大子数组与nums[1:n/2]的和相同
 2. nums[1:n]的最大子数组与nums[n/2+1:n]的和相同
-3. nums[1:n]的最大子段和为 <img src="http://www.forkosh.com/mathtex.cgi? \sum_{k=i}^{j} nums[k]">, 且 1<=i<=n,n/2+1<=j<=n;
+3. nums[1:n]的最大子段和为 <img src="http://www.forkosh.com/mathtex.cgi? \Large \sum_{k=i}^{j} nums[k]">, 且 1<=i<=n,n/2+1<=j<=n;
 
 ```C++
 class Solution
