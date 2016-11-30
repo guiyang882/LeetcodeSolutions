@@ -105,3 +105,66 @@ public:
     }
 };
 ```
+##  不同的二叉查找树 II
+给出n，生成所有由1...n为节点组成的不同的二叉查找树
+给出n = 3，生成所有5种不同形态的二叉查找树：
+```
+1         3     3       2    1
+ \       /     /       / \    \
+   3     2     1       1   3    2
+    /     /       \                \
+    2     1         2                3
+```
+```C++
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @paramn n: An integer
+     * @return: A list of root
+     */
+    vector<TreeNode* > createTrees(int start, int end) {
+        vector<TreeNode*> res;
+        if(start > end) {
+            res.push_back(NULL);
+            return res;
+        }
+        
+        if(start == end) {
+            res.push_back(new TreeNode(start));
+            return res;
+        }
+        
+        for(int i=start;i<=end;i++) {
+            vector<TreeNode*> left = createTrees(start, i-1);
+            vector<TreeNode*> right = createTrees(i+1, end);
+            for(auto l:left) {
+                for(auto r:right) {
+                    TreeNode* head = new TreeNode(i);
+                    head->left = l;
+                    head->right = r;
+                    res.push_back(head);
+                }
+            }
+        }
+        return res;
+    }
+    
+    vector<TreeNode *> generateTrees(int n) {
+        // write your code here
+        vector<TreeNode*> res = createTrees(1, n);
+        return res;
+    }
+};
+```
