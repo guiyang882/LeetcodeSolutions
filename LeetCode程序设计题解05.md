@@ -241,3 +241,68 @@ private:
     TrieNode* root;
 };
 ```
+
+## 正则表达式和前缀树搜索
+```C++
+class TrieNode {
+public:
+    // Initialize your data structure here.
+    TrieNode() {
+        isWord = false;
+        for(auto &a : alpha) {
+            a = NULL;
+        }
+    }
+    
+public:
+    TrieNode* alpha[26];
+    bool isWord;
+};
+
+class WordDictionary {
+public:
+    WordDictionary() {
+        root = new TrieNode();
+    }
+    // Adds a word into the data structure.
+    void addWord(string word) {
+        // Write your code here
+        TrieNode* p = root;
+        for(auto c:word) {
+            if(p->alpha[c-'a'] == NULL) {
+                p->alpha[c-'a'] = new TrieNode();
+            }
+            p = p->alpha[c-'a'];
+        }
+        p->isWord = true;
+    }
+
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    bool search(string word) {
+        // Write your code here
+        return search(word, root, 0);
+    }
+    
+    bool search(string &word, TrieNode* node, int pos) {
+        if(pos == word.size()) return node->isWord;
+        if(word[pos] == '.') {
+            for(auto r:node->alpha) {
+                if(r && search(word, r, pos+1)) return true;
+            }
+            return false;
+        } else {
+            return node->alpha[word[pos]-'a'] && search(word, node->alpha[word[pos]-'a'], pos+1);
+        }
+        return false;
+    }
+    
+private:
+    TrieNode* root;
+};
+
+// Your WordDictionary object will be instantiated and called as such:
+// WordDictionary wordDictionary;
+// wordDictionary.addWord("word");
+// wordDictionary.search("pattern");
+```
