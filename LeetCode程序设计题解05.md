@@ -168,3 +168,76 @@ public:
     }
 };
 ```
+## 实现字典树并实现查找
+```C++
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie trie;
+ * trie.insert("lintcode");
+ * trie.search("lint"); will return false
+ * trie.startsWith("lint"); will return true
+ */
+class TrieNode {
+public:
+    // Initialize your data structure here.
+    TrieNode() {
+        isWord = false;
+        for(auto &a : alpha) {
+            a = NULL;
+        }
+    }
+    
+public:
+    TrieNode* alpha[26];
+    bool isWord;
+};
+
+class Trie {
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    void insert(string word) {
+        TrieNode* p = root;
+        for(auto c:word) {
+            if(p->alpha[c-'a'] == NULL) {
+                p->alpha[c-'a'] = new TrieNode();
+            }
+            p = p->alpha[c-'a'];
+        }
+        p->isWord = true;
+    }
+
+    // Returns if the word is in the trie.
+    bool search(string word) {
+        TrieNode* p = root;
+        for(auto c:word) {
+            if(p && p->alpha[c-'a']) {
+                p = p->alpha[c-'a'];
+            } else {
+                return false;
+            }
+        }
+        return p->isWord;
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    bool startsWith(string prefix) {
+        TrieNode* p = root;
+        for(auto c:prefix) {
+            if(p && p->alpha[c-'a']) {
+                p = p->alpha[c-'a'];
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+private:
+    TrieNode* root;
+};
+```
