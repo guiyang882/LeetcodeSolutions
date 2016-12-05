@@ -306,3 +306,39 @@ private:
 // wordDictionary.addWord("word");
 // wordDictionary.search("pattern");
 ```
+
+## 使用背包问题求解
+在n个物品中挑选若干物品装入背包，最多能装多满？假设背包的大小为m，每个物品的大小为A[i]
+```C++
+class Solution {
+public:
+    /**
+     * @param m: An integer m denotes the size of a backpack
+     * @param A: Given n items with size A[i]
+     * @return: The maximum size
+     */
+    
+    void dfs(int m, int residue, const vector<int>& A, vector<bool>& selected, 
+    int &maxSum, int start) {
+        if(residue >= 0) {
+            maxSum = max(maxSum, m - residue);
+        }
+        for(int i=start;i<A.size();i++) {
+            if(selected[i] == false && A[i] <= residue) {
+                selected[i] = true;
+                dfs(m, residue - A[i], A, selected, maxSum, i+1);
+                selected[i] = false;
+            }
+        }
+    }
+    
+    int backPack(int m, vector<int> A) {
+        // write your code here
+        vector<bool> selected(A.size(), false);
+        int maxSum = 0;
+        dfs(m, m, A, selected, maxSum, 0);
+        return maxSum;
+    }
+};
+```
+- 这段代码是使用的思路就是暴力求解，进行深度优先遍历，遍历所有解空间，那必定会超时
