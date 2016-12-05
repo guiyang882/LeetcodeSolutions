@@ -342,3 +342,53 @@ public:
 };
 ```
 - 这段代码是使用的思路就是暴力求解，进行深度优先遍历，遍历所有解空间，那必定会超时
+
+```C++
+class Solution {
+public:
+    /**
+     * @param m: An integer m denotes the size of a backpack
+     * @param A: Given n items with size A[i]
+     * @return: The maximum size
+     */
+    
+    void dfs(int m, int residue, const vector<int>& A, vector<bool>& selected, 
+    int &maxSum, int start) {
+        if(residue >= 0) {
+            maxSum = max(maxSum, m - residue);
+        }
+        for(int i=start;i<A.size();i++) {
+            if(selected[i] == false && A[i] <= residue) {
+                selected[i] = true;
+                dfs(m, residue - A[i], A, selected, maxSum, i+1);
+                selected[i] = false;
+            }
+        }
+    }
+    
+    int backPack(int m, vector<int> A) {
+        // write your code here
+        //vector<bool> selected(A.size(), false);
+        int maxSum = 0;
+        //dfs(m, m, A, selected, maxSum, 0);
+        /*
+        dp[i,j] : 前i个物品放入容量为j的背包中的最大重量是
+        dp[i,j] = max(dp[i-1,j-A[i]] + A[i], dp[i-1, j])
+        */
+        int N = A.size();
+        vector<vector<int>> dp(N+1, vector<int>(m+1,0));
+        for(int i=1;i<=N;i++) {
+            for(int j=1;j<=m;j++) {
+                if(j - A[i-1] >= 0)
+                    dp[i][j] = max(dp[i-1][j-A[i-1]] + A[i-1], dp[i-1][j]);
+                else
+                    dp[i][j] = max(dp[i][j], dp[i-1][j]);
+            }
+        }
+        maxSum = dp[N][m];
+        return maxSum;
+    }
+};
+```
+
+- 将上述问题转化为二维动态规划问题，但是在最后却只通过了80%的测试用例，还要继续优化！
