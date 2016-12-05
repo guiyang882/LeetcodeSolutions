@@ -392,3 +392,54 @@ public:
 ```
 
 - 将上述问题转化为二维动态规划问题，但是在最后却只通过了80%的测试用例，还要继续优化！
+
+```C++
+class Solution {
+public:
+    /**
+     * @param m: An integer m denotes the size of a backpack
+     * @param A: Given n items with size A[i]
+     * @return: The maximum size
+     */
+    
+    void dfs(int m, int residue, const vector<int>& A, vector<bool>& selected, 
+    int &maxSum, int start) {
+        if(residue >= 0) {
+            maxSum = max(maxSum, m - residue);
+        }
+        for(int i=start;i<A.size();i++) {
+            if(selected[i] == false && A[i] <= residue) {
+                selected[i] = true;
+                dfs(m, residue - A[i], A, selected, maxSum, i+1);
+                selected[i] = false;
+            }
+        }
+    }
+    
+    int backPack(int m, vector<int> A) {
+        // write your code here
+        //vector<bool> selected(A.size(), false);
+        int maxSum = 0;
+        //dfs(m, m, A, selected, maxSum, 0);
+        /*
+        dp[i,j] : 前i个物品放入容量为j的背包中的最大重量是
+        dp[i,j] = max(dp[i-1,j-A[i]] + A[i], dp[i-1, j])
+        */
+        /*
+        对上述的动态规划方程进行优化
+        dp[i]仅仅和dp[i-1]的状态相关
+        且，每次在迭代时，需要从m开始遍历，这会将更加便于操作
+        */
+        int N = A.size();
+        vector<int> dp(m+1, 0);
+        for(int i=0;i<N;i++) {
+            for(int j=m;j>=0;j--) {
+                if(j - A[i] >= 0)
+                    dp[j] = max(dp[j-A[i]] + A[i], dp[j]);
+            }
+        }
+        maxSum = dp[m];
+        return maxSum;
+    }
+};
+```
