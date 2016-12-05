@@ -443,3 +443,50 @@ public:
     }
 };
 ```
+
+## 背包问题II
+给出n个物品的体积A[i]和其价值V[i]，将他们装入一个大小为m的背包，最多能装入的总价值有多大？
+
+```C++
+class Solution {
+public:
+    /**
+     * @param m: An integer m denotes the size of a backpack
+     * @param A & V: Given n items with size A[i] and value V[i]
+     * @return: The maximum value
+     */
+    /*
+    dp[i,j] : 存储当前i个物体存储到容量问j的包中，所最大的价值
+    dp[i,j] = {dp[i-1, j-A[i]] + val[i], dp[i-1,j]}
+    */
+    int backPackIII(int m, vector<int> A, vector<int> V) {
+        int N = A.size();
+        vector<int> dp(m+1, 0);
+        for(int i=0;i<N;i++) {
+            for(int j=m;j>=0;j--) {
+                if(j - A[i] >= 0) {
+                    dp[j] = max(dp[j], dp[j-A[i]] + V[i]);
+                }
+            }
+        }
+        return dp[m];
+    }
+    
+    int backPackII(int m, vector<int> A, vector<int> V) {
+        // write your code here
+        return backPackIII(m, A, V);
+        
+        int N = A.size();
+        vector<vector<int>> dp(N+1, vector<int>(m+1, 0));
+        for(int i=1;i<=N;i++) {
+            for(int j=m;j>=0;j--) {
+                if(j - A[i-1] >= 0) {
+                    dp[i][j] = max(dp[i-1][j], dp[i-1][j-A[i-1]] + V[i-1]);
+                }
+                dp[i][j] = max(dp[i][j], dp[i-1][j]);
+            }
+        }
+        return dp[N][m];
+    }
+};
+```
