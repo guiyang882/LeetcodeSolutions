@@ -490,3 +490,42 @@ public:
     }
 };
 ```
+
+##  最长公共子序列
+给出两个字符串，找到最长公共子序列(LCS)，返回LCS的长度。
+```C++
+class Solution {
+public:
+    /**
+     * @param A, B: Two strings.
+     * @return: The length of longest common subsequence of A and B.
+     */
+     
+    /*
+    动态规划
+    dp[i,j] : A[i], B[j]的最长公共子序列的长度
+    dp[i,j] = {
+        dp[i-1,j-1] + 1, if(A[i] == B[j])
+        max(dp[i-1,j], dp[i,j-1]), if(A[i] != B[j])
+    }
+    */
+    int longestCommonSubsequence(string A, string B) {
+        // write your code here
+        int res = 0;
+        int lA = A.size(), lB = B.size();
+        vector<vector<int> > dp(lA+1, vector<int>(lB+1, 0));
+        for(int i=1;i<=lA;i++) {
+            for(int j=1;j<=lB;j++) {
+                if(A[i-1] == B[j-1]) {
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                } else {
+                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        res = dp[lA][lB];
+        return res;
+    }
+};
+
+```
