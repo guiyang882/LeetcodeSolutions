@@ -594,3 +594,40 @@ private:
     set<vector<int>> table;
 };
 ```
+
+## 交错正负数
+给出一个含有正整数和负整数的数组，重新排列成一个正负数交错的数组。
+```C++
+class Solution {
+public:
+    /**
+     * @param A: An integer array.
+     * @return: void
+     */
+    void rerange(vector<int> &A) {
+        // write your code here
+        int N = A.size();
+        int r = 1, l = N-1;
+        
+        while(r<N) {
+            while(r<N && A[r] * A[r-1] < 0) {
+                r++;
+            }
+            int l = r;
+            if(A[r] > 0) {
+                while(l<N && A[l]>0) l++;
+            } else {
+                while(l<N && A[l]<0) l++;
+            }
+            if(l<N) {
+                swap(A[r], A[l]);
+            }
+            if(A[r] * A[r-1] > 0) {
+                A.insert(A.begin(), A[N-1]);
+                A.pop_back();
+                break;
+            }
+        }
+    }
+};
+```
