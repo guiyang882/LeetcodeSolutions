@@ -527,5 +527,70 @@ public:
         return res;
     }
 };
+```
 
+## 背包问题VI
+Given an integer array nums with all positive numbers and no duplicates, find the number of possible combinations that add up to a positive integer target.
+
+```C++
+class Solution {
+public:
+    /**
+     * @param nums an integer array and all positive numbers, no duplicates
+     * @param target an integer
+     * @return an integer
+     */
+    void helper(vector<int> &nums, int residue, int &cnt, vector<int> &cur) {
+        if(residue == 0) {
+            if(table.count(cur) == 0) {
+                cnt++;
+                table.insert(cur);
+            }
+        } else {
+            for(int i=0;i<nums.size();i++) {
+                if(residue - nums[i] >= 0) {
+                    cur.push_back(nums[i]);
+                    helper(nums, residue - nums[i], cnt, cur);
+                    cur.pop_back();
+                }
+            }
+        }
+    }
+    
+    /*
+    dp[i] : 含义是当容量为i时，有多少种装包的方法
+    dp[i] = {
+        if(cur_obj <= i) {
+            dp[i] += dp[i-cur_obj];
+        }
+    }
+    */
+    int helper02(vector<int>& nums, int target) {
+        vector<int> dp(target+1, 0);
+        dp[0] = 1;
+        for(int i=1;i<=target;i++) {
+            for(auto a:nums) {
+                if(i>=a) {
+                    dp[i] += dp[i-a];
+                }
+            }
+        }
+        return dp[target];
+    }
+    
+    int backPackVI(vector<int>& nums, int target) {
+        // Write your code here
+        int N = nums.size();
+        if(N == 0) return 0;
+        if(N == 1 && nums[0] != target) return 0;
+        int cnt = 0;
+        //vector<int> cur;
+        //helper(nums, target, cnt, cur);
+        cnt = helper02(nums, target);
+        return cnt;
+    }
+    
+private:
+    set<vector<int>> table;
+};
 ```
