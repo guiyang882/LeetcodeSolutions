@@ -694,3 +694,77 @@ public:
     }
 };
 ```
+
+## 买股票的最佳时机II
+假设有一个数组，它的第i个元素是一个给定的股票在第i天的价格。设计一个算法来找到最大的利润。你可以完成尽可能多的交易(多次买卖股票)。然而,你不能同时参与多个交易(你必须在再次购买前出售股票)。
+
+```C++
+class Solution {
+public:
+    /**
+     * @param prices: Given an integer array
+     * @return: Maximum profit
+     */
+    int maxProfit(vector<int> &prices) {
+        // write your code here
+        int start = 0, end = prices.size();
+        int res = 0;
+        for(int i=0;i<end-1;i++) {
+            if(prices[i] < prices[i+1]) {
+                res += (prices[i+1] - prices[i]);
+            }
+        }
+        return res;
+    }
+};
+```
+
+## 买股票的最佳时机III
+假设你有一个数组，它的第i个元素是一支给定的股票在第i天的价格。设计一个算法来找到最大的利润。你最多可以完成两笔交易。
+
+```C++
+class Solution {
+public:
+    /**
+     * @param prices: Given an integer array
+     * @return: Maximum profit
+     */
+    int maxProfit(vector<int> &prices) {
+        // write your code here
+        int N = prices.size();
+        if(N == 0 || N == 1) return 0;
+        
+        vector<int> left(N, 0);
+        vector<int> right(N, 0);
+        
+        //求在i时刻卖出时的最大收益(0-i)，这里要记录截止到i-1时刻的最低价格
+        int minRes = prices[0];
+        for(int i=1;i<N;i++) {
+            if(minRes < prices[i]) {
+                left[i] = max(left[i-1], prices[i] - minRes);
+            } else {
+                minRes = min(minRes, prices[i]);
+                left[i] = left[i-1];
+            }
+        }
+        
+        //求在i时刻买入时的最大收益(i-N)，这里要记录截止到i时刻的最高价格
+        int maxRes = prices[N-1];
+        for(int i=N-2;i>=0;i--) {
+            if(maxRes > prices[i]) {
+                right[i] = max(right[i+1], maxRes - prices[i]);
+            } else {
+                maxRes = max(maxRes, prices[i]);
+                right[i] = right[i+1];
+            }
+        }
+        
+        //求最多两次交易的最大收益
+        int res = 0;
+        for(int i=0;i<N;i++) {
+            res = max(res, left[i] + right[i]);
+        }
+        return res;
+    }
+};
+```
