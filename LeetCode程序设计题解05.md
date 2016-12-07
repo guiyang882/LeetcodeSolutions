@@ -800,3 +800,39 @@ public:
     }
 };
 ```
+
+## 组合
+组给出两个整数n和k，返回从1......n中选出的k个数的组合。
+```c++
+class Solution {
+public:
+    /**
+     * @param n: Given the range of numbers
+     * @param k: Given the numbers of combinations
+     * @return: All the combinations of k numbers out of 1..n
+     */
+    
+    void helper(int n, int k, vector<int>& data, int start) {
+        if(data.size() == k) {
+            table.push_back(data);
+            return ;
+        }
+        if(data.size() < k) {
+            for(int i=start;i<=n;i++) {
+                data.push_back(i);
+                helper(n, k, data, i+1);
+                data.pop_back();
+            }
+        }
+    }
+    
+    vector<vector<int> > combine(int n, int k) {
+        // write your code here
+        vector<int> data;
+        helper(n, k, data, 1);
+        return table;
+    }
+private:
+    vector<vector<int> > table;
+};
+```
