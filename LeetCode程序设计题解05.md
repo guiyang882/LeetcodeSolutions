@@ -768,3 +768,35 @@ public:
     }
 };
 ```
+## 连续子数组求和
+给定一个整数数组，请找出一个连续子数组，使得该子数组的和最大。输出答案时，请分别返回第一个数字和最后一个数字的下标。（如果两个相同的答案，请返回其中任意一个）
+
+```C++
+class Solution {
+public:
+    /**
+     * @param A an integer array
+     * @return  A list of integers includes the index of 
+     *          the first number and the index of the last number
+     */
+    vector<int> continuousSubarraySum(vector<int>& A) {
+        // Write your code here
+        int maxSum = A[0], tmpSum = A[0];
+        int start = 0, end = 0, tmpStart = 0;
+        for(int i=1;i<A.size();i++) {
+            if(tmpSum + A[i] < A[i]) {
+                tmpStart = i;
+            }
+            tmpSum = max(tmpSum + A[i], A[i]);
+            maxSum = max(maxSum, tmpSum);
+            if(maxSum == tmpSum) {
+                end = i;
+                start = tmpStart;
+            }
+        }
+       // cout << maxSum << endl;
+        vector<int> res = {start, end};
+        return res;
+    }
+};
+```
