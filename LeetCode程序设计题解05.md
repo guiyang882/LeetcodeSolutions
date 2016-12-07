@@ -631,3 +631,66 @@ public:
     }
 };
 ```
+## 求最大子数组II
+给定一个整数数组，找出两个 不重叠 子数组使得它们的和最大。每个子数组的数字在数组中的位置应该是连续的。返回最大的和。
+
+给出数组 [1, 3, -1, 2, -1, 2]
+这两个子数组分别为 [1, 3] 和 [2, -1, 2] 或者 [1, 3, -1, 2] 和 [2]，它们的最大和都是 7。
+
+```C++
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers
+     * @return: An integer denotes the sum of max two non-overlapping subarrays
+     */
+    int helper(vector<int>& nums, int start, int end) {
+        if(start > end) {
+            return 0;
+        }
+        int curSum = 0, maxSum = nums[start];
+        for(int i=start;i<=end;i++) {
+            curSum = max(curSum + nums[i], nums[i]);
+            maxSum = max(maxSum, curSum);
+        }
+        return maxSum;
+    }
+    
+    /*
+    先计算，左边数组中的最大连续子数组的和，并保存起来
+    在计算右边连最大续子数组的和，并逐渐与左边相应的位置的最大和求和进行比较
+    得到全局最大的数组的和
+    */
+    int helper02(vector<int>& nums) {
+        vector<int> left(nums.size(), 0);
+        int local = 0, global = INT_MIN;
+        for(int i=0;i<nums.size();i++) {
+            local = max(local + nums[i], nums[i]);
+            global = max(global, local);
+            left[i] = global;
+        }
+        
+        local = 0, global = INT_MIN;
+        int res = INT_MIN;
+        for(int i=nums.size()-1;i>=0;i--) {
+            if(i < nums.size()-1) {
+                res = max(res, left[i] + global);
+            }
+            local = max(local + nums[i], nums[i]);
+            global = max(global, local);
+        }
+        return res;
+    }
+    
+    int maxTwoSubArrays(vector<int> nums) {
+        // write your code here
+        // int res = INT_MIN;
+        // for(int i=0;i<nums.size()-1;i++) {
+        //     int a = helper(nums, 0, i);
+        //     int b = helper(nums, i+1, nums.size()-1);
+        //     res = max(res, a + b);
+        // }
+        return helper02(nums);
+    }
+};
+```
