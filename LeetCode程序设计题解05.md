@@ -836,3 +836,65 @@ private:
     vector<vector<int> > table;
 };
 ```
+## 数字组合
+给出一组候选数字(C)和目标数字(T),找到C中所有的组合，使找出的数字和为T。C中的数字可以无限制重复被选取。
+例如,给出候选数组[2,3,6,7]和目标数字7，所求的解为：
+[7]，
+[2,2,3]
+
+```C++
+class Solution {
+public:
+    /**
+     * @param candidates: A list of integers
+     * @param target:An integer
+     * @return: A list of lists of integers
+     */
+    
+    inline string vec2string(vector<int> &data) {
+        string res;
+        for(auto a:data) {
+            res += (to_string(a) + "#");
+        }
+        return res;
+    }
+    
+    void helper(vector<int>& candidates, int target, vector<int>& res) {
+        if(target == 0) {
+            string a = vec2string(res);
+            if(hash.count(a) == 0) {
+                table.push_back(res);
+                hash.insert(a);
+            }
+            return ;
+        }
+        if(target > 0) {
+            for(int i=0;i<candidates.size();i++) {
+                if(candidates[i] <= target) {
+                    if(res.size() == 0) {
+                        res.push_back(candidates[i]);
+                        helper(candidates, target - candidates[i], res);
+                        res.pop_back();
+                    } else if(candidates[i] >= res[res.size()-1]) {
+                        res.push_back(candidates[i]);
+                        helper(candidates, target - candidates[i], res);
+                        res.pop_back();
+                    }
+                }
+            }
+        }
+    }
+    
+    vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
+        // write your code here
+        vector<int> res;
+        sort(candidates.begin(), candidates.end());
+        helper(candidates, target, res);
+        return table;
+    }
+    
+private:
+    vector<vector<int> > table;
+    set<string> hash;
+};
+```
