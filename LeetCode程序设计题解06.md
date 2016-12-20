@@ -79,3 +79,83 @@ public:
     }
 };
 ```
+
+## N皇后问题
+```C++
+class Solution {
+public:
+    /**
+     * Get all distinct N-Queen solutions
+     * @param n: The number of queens
+     * @return: All distinct solutions
+     * For example, A string '...Q' shows a queen on forth position
+     */
+    void convert2board(vector<int> &board, vector<string> &output) {
+        int N = board.size();
+        for(int i=0;i<N;i++) {
+            string res;
+            for(int j=0;j<N;j++) {
+                if(board[i] == j) {
+                    res += 'Q';
+                } else {
+                    res += '.';
+                }
+            }
+            output.push_back(res);
+        }
+    }
+    
+    bool canPlace(const vector<int> &board, int row, int col) {
+        for(int i=0;i<row && i<board.size();i++) {
+            if(board[i] == col || abs(board[i] - col) == abs(i - row)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    vector<vector<string> > solveNQueens(int n) {
+        // write your code here
+        vector<vector<string> > results;
+        
+        vector<int> board(n,-1);
+        int row=0,col=0;
+        while(row<n) {
+            while(col<n) {
+                if(canPlace(board, row, col)) {
+                    board[row] = col;
+                    col = 0;
+                    break;
+                } else {
+                    col++;
+                }
+            }
+            
+            if(board[row] == -1) {
+                if(row == 0) {
+                    break;
+                } else {
+                    row --;
+                    col = board[row]+1;
+                    board[row] = -1;
+                    continue;
+                }
+            }
+            
+            if(row == n-1) {
+                vector<string> output;
+                convert2board(board, output);
+                results.push_back(output);
+                
+                col = board[row]+1;
+                board[row] = -1;
+                continue;
+            }
+            
+            row++;
+        }
+        
+        return results;
+    }
+};
+```
