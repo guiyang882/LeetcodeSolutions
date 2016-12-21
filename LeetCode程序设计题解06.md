@@ -159,3 +159,26 @@ public:
     }
 };
 ```
+
+## 摆动排序
+给你一个没有排序的数组，请将原数组就地重新排列满足如下性质
+nums[0] <= nums[1] >= nums[2] <= nums[3]....
+
+```C++
+class Solution {
+public:
+    /**
+     * @param nums a list of integer
+     * @return void
+     */  
+    void wiggleSort(vector<int>& nums) {
+        // Write your code here
+        if (nums.size() <= 1) return;
+        for (int i = 1; i < nums.size(); ++i) {
+            if ((i % 2 == 1 && nums[i] < nums[i - 1]) || (i % 2 == 0 && nums[i] > nums[i - 1])) {
+                swap(nums[i], nums[i - 1]);
+            }
+        }
+    }
+};
+```
