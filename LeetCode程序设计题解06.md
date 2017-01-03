@@ -217,3 +217,61 @@ public:
     }  
 };
 ```
+
+## 线段树的构造II
+```C++
+/**
+ * Definition of SegmentTreeNode:
+ * class SegmentTreeNode {
+ * public:
+ *     int start, end, max;
+ *     SegmentTreeNode *left, *right;
+ *     SegmentTreeNode(int start, int end, int max) {
+ *         this->start = start;
+ *         this->end = end;
+ *         this->max = max;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     *@param A: a list of integer
+     *@return: The root of Segment Tree
+     */
+    int findMaxElem(vector<int> &A, int left, int right) {
+        int maxV = INT_MIN;
+        for(int i=left;i<=right;i++) {
+            if(maxV < A[i]) {
+                maxV = A[i];
+            }
+        }
+        return maxV;
+    }
+    
+    SegmentTreeNode* helper(vector<int> &A, int left, int right) {
+        if(left > right) {
+            return NULL;
+        }
+        if(left == right) {
+            SegmentTreeNode* node = new SegmentTreeNode(left, right, A[left]);
+            return node;
+        }
+        SegmentTreeNode* root = new SegmentTreeNode(left, right, findMaxElem(A, left, right));
+        int mid = (left + right) / 2;
+        SegmentTreeNode* node01 = helper(A, left, mid);
+        root->left = node01;
+        SegmentTreeNode* node02 = helper(A, mid+1, right);
+        root->right = node02;
+        return root;
+    }
+    
+    SegmentTreeNode * build(vector<int>& A) {
+        // write your code here
+        int left = 0, right = A.size()-1;
+        if(right < left) return NULL;
+        return helper(A, left, right);
+    }
+};
+```
