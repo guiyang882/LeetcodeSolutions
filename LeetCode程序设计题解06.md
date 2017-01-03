@@ -360,3 +360,46 @@ public:
     }
 };
 ```
+## 线段树查询统计
+```C++
+/**
+ * Definition of SegmentTreeNode:
+ * class SegmentTreeNode {
+ * public:
+ *     int start, end, count;
+ *     SegmentTreeNode *left, *right;
+ *     SegmentTreeNode(int start, int end, int count) {
+ *         this->start = start;
+ *         this->end = end;
+ *         this->count = count;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     *@param root, start, end: The root of segment tree and 
+     *                         an segment / interval
+     *@return: The count number in the interval [start, end] 
+     */
+    int query(SegmentTreeNode *root, int start, int end) {
+        // write your code here
+        if(start > end || root == NULL) return 0;
+        
+        int left = root->start, right = root->end;
+        if(start <= left && end >= right) {
+            return root->count;
+        }
+        int mid = (left + right) / 2;
+        int lcnt = 0, rcnt = 0;
+        if(mid >= start) {
+            lcnt = query(root->left, start, min(mid, end));
+        }
+        if(mid < end) {
+            rcnt = query(root->right, mid>start?++mid:start, end);
+        }
+        return lcnt + rcnt;
+    }
+};
+```
