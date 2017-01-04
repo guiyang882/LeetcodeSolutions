@@ -447,3 +447,43 @@ private:
     vector<int> A;
 };
 ```
+## 螺旋矩阵
+```C++
+class Solution {
+public:
+    /**
+     * @param matrix a matrix of m x n elements
+     * @return an integer array
+     */
+    void helper(int index, int width, int height, vector<vector<int>>& matrix) {
+        if(width <= 0 || height <= 0) return ;
+        for(int i=0;i<width;i++) {
+            res.push_back(matrix[index][index + i]);
+        }
+        for(int i=1;i<height;i++) {
+            res.push_back(matrix[index + i][index + width - 1]);
+        }
+        for(int i=width-2;i>=0;i--) {
+            res.push_back(matrix[index + height - 1][index + i]);
+        }
+        for(int i=height-2;i>0;i--) {
+            res.push_back(matrix[index + i][index]);
+        }
+        helper(index + 1, width - 2, height - 2, matrix);
+    }
+    
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        // Write your code here
+        int height = matrix.size();
+        if(height<=0) return res;
+        int width = matrix[0].size();
+        
+        helper(0, width, height, matrix);
+        
+        return res;
+    }
+    
+private:
+    vector<int> res;
+};
+```
