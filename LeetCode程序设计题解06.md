@@ -403,3 +403,47 @@ public:
     }
 };
 ```
+## 带最小值的栈
+```C++
+class MinStack {
+public:
+    MinStack() {
+        // do initialization if necessary
+        A.clear();
+    }
+
+    void push(int number) {
+        // write your code here
+        if(A.empty()) {
+            A.push_back(number);
+            B.push(0);
+        } else {
+            A.push_back(number);
+            if(number < A[B.top()]) {
+                B.push(A.size()-1);
+            }
+        }
+    }
+
+    int pop() {
+        // write your code here
+        if(B.top() == A.size()-1) {
+            B.pop();
+        }
+        int tmp = A.back();
+        A.pop_back();
+        return tmp;
+    }
+
+    int min() {
+        // write your code here
+        if(!B.empty()) {
+            return A[B.top()];
+        }
+    }
+    
+private:
+    stack<int> B;
+    vector<int> A;
+};
+```
