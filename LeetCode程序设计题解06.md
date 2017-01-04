@@ -509,3 +509,40 @@ private:
     vector<int> res;
 };
 ```
+## 螺旋矩阵II
+```C++
+class Solution {
+public:
+    /**
+     * @param n an integer
+     * @return a square matrix
+     */
+    vector<vector<int>> generateMatrix(int n) {
+        // Write your code here
+        vector<vector<int>> matrix(n, vector<int>(n, 1));
+        if(n == 0 || n == 1) return matrix;
+        int circle = 0, curnum = 1;
+        while(circle <= (n-1)/2) {
+            int i=circle, j=circle;
+            matrix[i][j] = curnum++;
+            while(j < n-i-1) {
+                matrix[i][++j] = curnum++;
+            }
+            
+            while(i < j) {
+                matrix[++i][j] = curnum++;
+            }
+            
+            while(j > n-i-1) {
+                matrix[i][--j] = curnum++;
+            }
+            
+            while(i > j+1) {
+                matrix[--i][j] = curnum++;
+            }
+            circle++;
+        }
+        return matrix;
+    }
+};
+```
