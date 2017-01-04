@@ -546,3 +546,41 @@ public:
     }
 };
 ```
+
+## 寻找丑数II
+```C++
+class Solution {
+public:
+    /*
+     * @param n an integer
+     * @return the nth prime number as description.
+     */
+    int nthUglyNumber(int n) {
+        // write your code here
+        vector<int> res(n,1);
+        if(n <= 6) return n;
+        int ind2 = 0, ind3 = 0, ind5 = 0;
+        int cnt = 1;
+        while(cnt < n) {
+            int a2 = res[ind2] * 2;
+            int a3 = res[ind3] * 3;
+            int a5 = res[ind5] * 5;
+            
+            int minV = min(a2, min(a3, a5));
+            if(minV == a2) {
+                ind2++;
+            }
+            
+            if(minV == a3) {
+                ind3++;
+            }
+            
+            if(minV == a5) {
+                ind5++;
+            }
+            res[cnt++] = minV;
+        }
+        return res.back();
+    }
+};
+```
