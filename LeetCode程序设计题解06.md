@@ -455,7 +455,7 @@ public:
      * @param matrix a matrix of m x n elements
      * @return an integer array
      */
-    void helper(int index, int width, int height, vector<vector<int>>& matrix) {
+    void helper01(int index, int width, int height, vector<vector<int>>& matrix) {
         if(width <= 0 || height <= 0) return ;
         for(int i=0;i<width;i++) {
             res.push_back(matrix[index][index + i]);
@@ -469,16 +469,38 @@ public:
         for(int i=height-2;i>0;i--) {
             res.push_back(matrix[index + i][index]);
         }
-        helper(index + 1, width - 2, height - 2, matrix);
+        helper01(index + 1, width - 2, height - 2, matrix);
+    }
+    
+    void helper02(int upr, int upc, int downr, int downc, vector<vector<int>>& matrix) {
+        while(upr <= downr && upc <= downc) {
+            int i=upr, j = upc;
+            while(j<=downc) {
+                res.push_back(matrix[i][j++]);
+            }
+            j--,i++;
+            while(i<=downr) {
+                res.push_back(matrix[i++][j]);
+            }
+            i--,j--;
+            while(j>upc && upr != downr) {
+                res.push_back(matrix[i][j--]);
+            }
+            while(i>upr && upc != downc) {
+                res.push_back(matrix[i--][j]);
+            }
+            upr++,upc++,downr--,downc--;
+        }
     }
     
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
         // Write your code here
-        int height = matrix.size();
-        if(height<=0) return res;
-        int width = matrix[0].size();
+        int row = matrix.size();
+        if(row<=0) return res;
+        int col = matrix[0].size();
         
-        helper(0, width, height, matrix);
+        // helper01(0, row, col, matrix);
+        helper02(0, 0, row-1, col-1, matrix);
         
         return res;
     }
