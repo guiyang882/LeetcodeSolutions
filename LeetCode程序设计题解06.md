@@ -720,3 +720,40 @@ private:
     vector<int> tmp;
 };
 ```
+## 将数组重新排序以构造最小值
+```C++
+bool cmp(int left, int right) {
+    string a = to_string(left);
+    string b = to_string(right);
+    if(a + b >= b + a) {
+        return false;
+    }
+    return true;
+}
+
+class Solution {
+public:
+    /**
+     * @param nums n non-negative integer array
+     * @return a string
+     */
+    string minNumber(vector<int>& nums) {
+        // Write your code here
+        sort(nums.begin(), nums.end(), cmp);
+        string res;
+        for(int i=0;i<nums.size();i++) {
+            res += to_string(nums[i]);
+        }
+        //cout << res << endl;
+        string tmp;
+        for(int i=0;i<res.size();i++) {
+            if(res[i] != '0') {
+                tmp = res.substr(i);
+                break;
+            }
+        }
+        if(tmp.size() == 0) tmp = "0";
+        return tmp;
+    }
+};
+```
