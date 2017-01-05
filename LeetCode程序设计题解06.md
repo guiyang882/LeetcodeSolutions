@@ -595,3 +595,32 @@ class Solution:
             cnt += list(str(i)).count(str(k))
         return cnt
 ```
+
+```C++
+class Solution {
+public:
+    /*
+     * param k : As description.
+     * param n : As description.
+     * return: How many k's between 0 and n.
+     */
+    int digitCounts(int k, int n) {
+        // write your code here
+        int cnt = 0;
+        for(int i=0;i<=n;i++) {
+            int target = i;
+            if(target == 0 && k == 0) {
+                cnt ++;
+            } else {
+                while(target) {
+                    if(target % 10 == k) {
+                        cnt++;
+                    }
+                    target /= 10;
+                }
+            }
+        }
+        return cnt;
+    }
+};
+```
