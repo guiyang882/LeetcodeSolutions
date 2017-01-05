@@ -661,3 +661,62 @@ public:
     }
 };
 ```
+## 逆序对(分治算法)
+```C++
+class Solution {
+public:
+    /**
+     * @param A an array
+     * @return total of reverse pairs
+     */
+    long long mergeArray(vector<int>& A, int start, int mid, int end) {
+        int i=mid, j=end, k=0;
+        long long cnt = 0;
+        
+        while(i>=start && j>mid) {
+            if(A[j] < A[i]) {
+                tmp[k++] = A[i--];
+                cnt += (j-(mid+1) + 1);
+            } else {
+                tmp[k++] = A[j--];
+            }
+        }
+        
+        while(i>=start) {
+            tmp[k++] = A[i--];
+        }
+        while(j>mid) {
+            tmp[k++] = A[j--];
+        }
+        for(i=0;i<k;i++) {
+            A[end-i] = tmp[i];
+        }
+        return cnt;
+    }
+    
+    long long helper(vector<int>& A, int start, int end) {
+        long long cnt = 0;
+        if(start < end) {
+            int mid = (start + end) / 2;
+            cnt += helper(A, start, mid);
+            cnt += helper(A, mid + 1, end);
+            cnt += mergeArray(A, start, mid, end);
+        }
+        return cnt;
+    }
+    
+    long long reversePairs(vector<int>& A) {
+        // Write your code here
+        
+        int N = A.size();
+        if(N <= 1) return 0;
+        
+        tmp.resize(N, 0);
+        long long cnt = 0;
+        cnt = helper(A, 0, N-1);
+        return cnt;
+    }
+private:
+    vector<int> tmp;
+};
+```
