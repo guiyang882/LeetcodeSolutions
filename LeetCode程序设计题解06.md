@@ -584,3 +584,14 @@ public:
     }
 };
 ```
+## 统计数字
+```python
+class Solution:
+    # @param k & n  two integer
+    # @return ans a integer
+    def digitCounts(self, k, n):
+        cnt = 0
+        for i in xrange(n+1):
+            cnt += list(str(i)).count(str(k))
+        return cnt
+```
