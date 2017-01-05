@@ -624,3 +624,40 @@ public:
     }
 };
 ```
+
+```C++
+class Solution {
+public:
+    /*
+     * param k : As description.
+     * param n : As description.
+     * return: How many k's between 0 and n.
+     */
+    int digitCounts(int k, int n) {
+        // write your code here
+        int res = 0, base = 1;
+        if(n==0 && k==0)
+            return 1;
+            
+        while(n/base>0) {
+            int curBit = (n/base)%10;
+            int low = n - (n/base)*base;
+            int high = n/(base*10);
+            // cout << "curBit: " << curBit << ", low: " << low << ", high: " << high << endl;
+            if (curBit < k) {
+                res += high * base;                         
+            } else if (curBit == k) {  
+                res += high*base+low+1;  
+            } else {  
+                if(k==0 && high==0){  
+                      ;
+                }else{  
+                    res += (high+1)*base;  
+                }  
+            }  
+            base *=10;
+        }  
+        return res;  
+    }
+};
+```
