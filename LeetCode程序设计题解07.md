@@ -108,3 +108,73 @@ public:
     }
 };
 ```
+## 最近公共祖先
+```C++
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: The root of the binary search tree.
+     * @param A and B: two nodes in a Binary.
+     * @return: Return the least common ancestor(LCA) of the two nodes.
+     */
+    void helper(vector<TreeNode*>& path, TreeNode* root, TreeNode* A, TreeNode* B) {
+        path.push_back(root);
+        
+        if(root->val == A->val) {
+            APath.assign(path.begin(), path.end());
+            //show(APath);
+        }
+        if(root->val == B->val) {
+            BPath.assign(path.begin(), path.end());
+            //show(BPath);
+        }
+        
+        if(root->left) {
+            helper(path, root->left, A, B);
+            path.pop_back();
+        }
+        if(root->right) {
+            helper(path, root->right, A, B);
+            path.pop_back();
+        }
+    }
+    
+    TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *A, TreeNode *B) {
+        // write your code here
+        vector<TreeNode*> path;
+        helper(path, root, A, B);
+        TreeNode* res = NULL;
+        for(int i=0;i<min(APath.size(), BPath.size());i++) {
+            if(APath[i] == BPath[i]) {
+                res = APath[i];
+            } else {
+                break;
+            }
+        }
+        return res;
+    }
+    
+    void show(vector<TreeNode*> tmp) {
+        cout << endl;
+        for(auto a:tmp) {
+            cout << a->val << " ";
+        }
+        cout << endl;
+    }
+private:
+    vector<TreeNode*> APath;
+    vector<TreeNode*> BPath;
+};
+```
