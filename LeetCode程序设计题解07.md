@@ -178,3 +178,63 @@ private:
     vector<TreeNode*> BPath;
 };
 ```
+## 在线数据流中位数
+```C++
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers.
+     * @return: The median of numbers
+     */
+    vector<int> medianII(vector<int> &nums) {
+        // write your code here
+        vector<int> res;
+        for(int i=0;i<nums.size();i++) {
+            insert(nums[i]);
+            int tmp = getMedian();
+            res.push_back(tmp);
+        }
+        return res;
+    }
+    
+    void insert(int val) {
+        int N = minRear.size() + maxPrefix.size();
+        if(N % 2 == 1) { // 如果现在数据是奇数个数据，添加数据后是偶数个数据，将新数据添加到后半段的数据中
+            if(maxPrefix.size() > 0 && val < maxPrefix[0]) {
+                maxPrefix.push_back(val);
+                push_heap(maxPrefix.begin(), maxPrefix.end(), less<int>());
+                val = maxPrefix[0];
+                pop_heap(maxPrefix.begin(), maxPrefix.end(), less<int>());
+                maxPrefix.pop_back();
+            }
+            minRear.push_back(val);
+            push_heap(minRear.begin(), minRear.end(), greater<int>());
+        } else { // 如果出现数据整体是偶数个数据，添加数据后是奇数个数据，将新数据添加到前半段的数据中去
+            if(minRear.size() > 0 && val > minRear[0]) {
+                minRear.push_back(val);
+                push_heap(minRear.begin(), minRear.end(), greater<int>());
+                val = minRear[0];
+                pop_heap(minRear.begin(), minRear.end(), greater<int>());
+                minRear.pop_back();
+            }
+            maxPrefix.push_back(val);
+            push_heap(maxPrefix.begin(), maxPrefix.end(), less<int>());
+        }
+    }
+    
+    int getMedian() {
+        int N = minRear.size() + maxPrefix.size();
+        if(N == 0) return -1;
+        return maxPrefix[0];
+        if(N % 2 == 1) {
+            return maxPrefix[0];
+        } else {
+            return (maxPrefix[0] + minRear[0]) / 2;
+        }
+    }
+
+private:
+    vector<int> minRear; // 数组后半段的数据建立了一个最小堆
+    vector<int> maxPrefix; // 数组前半段的数据建立了一个最大堆
+};
+```
