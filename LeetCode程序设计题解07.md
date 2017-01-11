@@ -238,3 +238,37 @@ private:
     vector<int> maxPrefix; // 数组前半段的数据建立了一个最大堆
 };
 ```
+
+## 滑动窗口最大值
+### Solution 01
+```C++
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers.
+     * @return: The maximum number inside the window at each moving.
+     */
+    typedef pair<int, int> Pair;
+    
+    vector<int> maxSlidingWindow(vector<int> &nums, int k) {
+        // write your code here
+        vector<int> res;
+        
+        priority_queue<Pair> MaxHeap;
+        for(int i=0;i<k-1;i++) {
+            MaxHeap.push(Pair(nums[i], i));
+        }
+        
+        for(int i=k-1;i<nums.size();i++) {
+            MaxHeap.push(Pair(nums[i], i));
+            Pair p = MaxHeap.top();
+            while(p.second < i - (k-1)) {
+                MaxHeap.pop();
+                p = MaxHeap.top();
+            }
+            res.push_back(p.first);
+        }
+        return res;
+    }
+};
+```
