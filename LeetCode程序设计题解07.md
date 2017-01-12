@@ -300,3 +300,120 @@ public:
     }
 };
 ```
+## 迷你推特
+实现一个迷你的推特，支持下列几种方法
+1.postTweet(user_id, tweet_text). 发布一条推特.
+2.getTimeline(user_id). 获得给定用户最新发布的十条推特，按照发布时间从最近的到之前排序
+3.getNewsFeed(user_id). 获得给定用户的朋友或者他自己发布的最新十条推特，从发布时间最近到之前排序
+4.follow(from_user_id, to_user_id). from_user_id 关注 to_user_id.
+5.unfollow(from_user_id, to_user_id). from_user_id 取消关注 to_user_id.
+
+```C++
+/**
+ * Definition of Tweet:
+ * class Tweet {
+ * public:
+ *     int id;
+ *     int user_id;
+ *     String text;
+ *     static Tweet create(int user_id, string tweet_text) {
+ *         // This will create a new tweet object,
+ *         // and auto fill id
+ *     }
+ * }
+ */
+
+bool cmp(Tweet a, Tweet b) {
+    if(a.id > b.id) return true;
+    return false;
+}
+
+class MiniTwitter {
+private:
+    // user_id
+    map<int, vector<Tweet>> usermap;
+    map<int, set<int>> userConnections;
+    
+public:
+    MiniTwitter() {
+        // initialize your data structure here.
+        usermap.clear();
+        userConnections.clear();
+    }
+
+    // @param user_id an integer
+    // @param tweet a string
+    // return a tweet
+    Tweet postTweet(int user_id, string tweet_text) {
+        //  Write your code here
+        Tweet obj = Tweet::create(user_id, tweet_text);
+        if(usermap.count(user_id) == 0) {
+            usermap[user_id] = vector<Tweet>{obj};
+        } else {
+            if(usermap[user_id].size() < 10) {
+                usermap[user_id].insert(usermap[user_id].begin(), obj);
+            } else {
+                usermap[user_id].pop_back();
+                usermap[user_id].insert(usermap[user_id].begin(), obj);
+            }
+        }
+        return obj;
+    }
+
+    // @param user_id an integer
+    // return a list of 10 new feeds recently
+    // and sort by timeline
+    vector<Tweet> getNewsFeed(int user_id) {
+        // Write your code here
+        vector<Tweet> res;
+        res = getTimeline(user_id);
+        for(auto user:userConnections[user_id]) {
+            vector<Tweet> tmp = getTimeline(user);
+            if(tmp.size() > 0) {
+                res.insert(res.begin(), tmp.begin(), tmp.end());
+            }
+        }
+        sort(res.begin(), res.end(), cmp);
+        if(res.size() > 10) {
+            vector<Tweet> tmp;
+            tmp.assign(res.begin(), res.begin() + 10);
+            return tmp;
+        }
+        return res;
+    }
+        
+    // @param user_id an integer
+    // return a list of 10 new posts recently
+    // and sort by timeline
+    vector<Tweet>  getTimeline(int user_id) {
+        // Write your code here
+        vector<Tweet> res;
+        if(usermap.count(user_id) == 0) {
+            return res;
+        }
+        return usermap[user_id];
+    }
+
+    // @param from_user_id an integer
+    // @param to_user_id an integer
+    // from user_id follows to_user_id
+    void follow(int from_user_id, int to_user_id) {
+        // Write your code here
+        if(userConnections.count(from_user_id) == 0) {
+            userConnections[from_user_id] = set<int>{to_user_id};
+        } else {
+            userConnections[from_user_id].insert(to_user_id);
+        }
+    }
+
+    // @param from_user_id an integer
+    // @param to_user_id an integer
+    // from user_id unfollows to_user_id
+    void unfollow(int from_user_id, int to_user_id) {
+        // Write your code here
+        if(userConnections.count(from_user_id) != 0) {
+            userConnections[from_user_id].erase(to_user_id);
+        }
+    }
+};
+```
