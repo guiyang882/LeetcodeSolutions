@@ -417,3 +417,63 @@ public:
     }
 };
 ```
+## 螺栓与螺母匹配的问题
+```C++
+/**
+ * class Comparator {
+ *     public:
+ *      int cmp(string a, string b);
+ * };
+ * You can use compare.cmp(a, b) to compare nuts "a" and bolts "b",
+ * if "a" is bigger than "b", it will return 1, else if they are equal,
+ * it will return 0, else if "a" is smaller than "b", it will return -1.
+ * When "a" is not a nut or "b" is not a bolt, it will return 2, which is not valid.
+*/
+class Solution {
+public:
+    /**
+     * @param nuts: a vector of integers
+     * @param bolts: a vector of integers
+     * @param compare: a instance of Comparator
+     * @return: nothing
+     */
+    void my_qsort(vector<string> &nuts, vector<string> &bolts, Comparator compare, int l, int r) {
+        if(l >= r) {
+            return ;
+        }
+        int ind = my_partition(nuts, bolts[l], compare, l, r);
+        my_partition(bolts, nuts[ind], compare, l, r);
+        my_qsort(nuts, bolts, compare, l, ind - 1);
+        my_qsort(nuts, bolts, compare, ind+1, r);
+    }
+    
+    int my_partition(vector<string> &str, string &pivot, Comparator compare, int l, int u) {
+        int m = l;
+        for (int i = l + 1; i <= u; ++i) {
+            if (compare.cmp(str[i], pivot) == -1 || 
+                compare.cmp(pivot, str[i]) == 1) {
+
+                ++m;
+                std::swap(str[m], str[i]);
+            } else if (compare.cmp(str[i], pivot) == 0 || 
+                       compare.cmp(pivot, str[i]) == 0) {
+                // swap nuts[l]/bolts[l] with pivot
+                std::swap(str[i], str[l]);
+                --i;
+            }
+        }
+        // move pivot to proper index
+        std::swap(str[m], str[l]);
+
+        return m;
+    }
+    
+    void sortNutsAndBolts(vector<string> &nuts, vector<string> &bolts, Comparator compare) {
+        // write your code here
+        if(nuts.size() == 0 || bolts.size() == 0 || nuts.size() != bolts.size()) {
+            return ;
+        }
+        my_qsort(nuts, bolts, compare, 0, nuts.size()-1);
+    }
+};
+```
