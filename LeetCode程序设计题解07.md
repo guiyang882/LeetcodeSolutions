@@ -477,3 +477,27 @@ public:
     }
 };
 ```
+## 图像旋转90度，按照顺时针旋转
+```C++
+class Solution {
+public:
+    /**
+     * @param matrix: A list of lists of integers
+     * @return: Void
+     */
+    void rotate(vector<vector<int> > &matrix) {
+        // write your code here
+        int N = matrix.size();
+        if(N == 0) return ;
+        for(int i=0; i<N/2; i++) {
+            int j = N - i - 1;
+            swap(matrix[i], matrix[j]);
+        }
+        for(int i=0;i<N;i++) {
+            for(int j=0;j<i;j++) {
+                swap(matrix[i][j], matrix[j][i]);
+            }
+        }
+    }
+};
+```
