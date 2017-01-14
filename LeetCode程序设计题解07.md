@@ -554,3 +554,31 @@ public:
     }
 };
 ```
+## x的n次幂
+```C++
+class Solution {
+public:
+    /**
+     * @param x the base number
+     * @param n the power number
+     * @return the result
+     */
+    double myPow(double x, int n) {
+        // Write your code here
+        if(x == 0) return 0;
+        if(n == 0) return 1;
+        if(n == 1) return x;
+        bool flag = true;
+        if(n < 0) flag = false, n = -n;
+        
+        int k = n / 2;
+        int l = n - k * 2;
+        double rk = myPow(x, k);
+        double rl = myPow(x, l);
+        double res = rk * rk * rl;
+        if (flag == false) 
+            return 1 / res;
+        return res;
+    }
+};
+```
