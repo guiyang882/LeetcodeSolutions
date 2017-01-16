@@ -621,3 +621,65 @@ public:
     }
 };
 ```
+## 二进制表示
+```C++
+class Solution {
+public:
+    /**
+     *@param n: Given a decimal number that is passed in as a string
+     *@return: A string
+     */
+    string getInt(int intPart) {
+        string res ; 
+        if(intPart == 0) {
+            res = "0";
+        }
+        while(intPart) {
+            res = string(1, intPart % 2 + '0') + res;
+            intPart /= 2;
+        }
+        return res;
+    }
+    
+    string getDouble(double resPart) {
+        string res;
+        
+        if (resPart == 0) return "0";
+        
+        while (resPart != 0.0) {
+            double ans = resPart * 2;
+            int tmp = (int)ans;
+            res += (tmp + '0');
+            resPart = ans - tmp;
+        }
+
+        return res;
+    }
+    
+    string binaryRepresentation(string n) {
+        // wirte your code here
+        size_t pos = n.find_first_of(".");
+        int intPart = 0;
+        double resPart = 0.0;
+        
+        if(pos == string::npos) {
+            intPart = atoi(n.substr(0, pos).c_str());
+        } else {
+            intPart = atoi(n.substr(0, pos).c_str());
+            resPart = atof(n.substr(pos).c_str());
+        }
+        string res;
+        if(resPart == 0.0) {
+            res = getInt(intPart);
+        } else {
+            res = getInt(intPart);
+            res += ".";
+            string resStr = getDouble(resPart);
+            if(resStr.size() > 32) return "ERROR";
+            res += resStr;
+        }
+        
+        return res;
+    }
+};
+```
