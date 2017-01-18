@@ -748,3 +748,30 @@ public:
     }
 };
 ```
+## 接雨水
+```C++
+class Solution {
+public:
+    /**
+     * @param heights: a vector of integers
+     * @return: a integer
+     */
+    int trapRainWater(vector<int> &heights) {
+        // write your code here
+        int res = 0;
+        if(heights.size() == 0) return res;
+        int l=0, r=heights.size()-1;
+        int lmax=0, rmax=0;
+        while(l < r) {
+            lmax = max(lmax, heights[l]);
+            rmax = max(lmax, heights[r]);
+            if(lmax < rmax) {
+                res += (lmax - heights[l++]);
+            } else {
+                res += (rmax - heights[r--]);
+            }
+        }
+        return res;
+    }
+};
+```
