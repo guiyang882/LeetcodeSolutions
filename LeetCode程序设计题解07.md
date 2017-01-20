@@ -764,7 +764,7 @@ public:
         int lmax=0, rmax=0;
         while(l < r) {
             lmax = max(lmax, heights[l]);
-            rmax = max(lmax, heights[r]);
+            rmax = max(rmax, heights[r]);
             if(lmax < rmax) {
                 res += (lmax - heights[l++]);
             } else {
