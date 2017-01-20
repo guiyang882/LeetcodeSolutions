@@ -51,3 +51,58 @@ public:
     }
 };
 ```
+## 回文链表
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param head a ListNode
+     * @return a boolean
+     */
+    int getLen(ListNode* head) {
+        ListNode* tmp = head;
+        int N = 0;
+        while(tmp) {
+            N++;
+            tmp = tmp->next;
+        }
+        return N;
+    }
+    bool isPalindrome(ListNode* head) {
+        // Write your code here
+        int N = getLen(head);
+        if(N <= 1) return true;
+        int l = 1;
+        stack<int> prepart;
+        ListNode* tmp = head;
+        while(l <= (N+1) / 2) {
+            if(N % 2 == 1 && l == (N+1)/2) {
+                tmp = tmp->next;
+                break;
+            }
+            prepart.push(tmp->val);
+            tmp = tmp->next;
+            l++;
+        }
+        while(tmp) {
+            int topVal= tmp->val;
+            int lastVal = prepart.top();
+            if(topVal == lastVal) {
+                tmp = tmp -> next;
+                prepart.pop();
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+};
+```
