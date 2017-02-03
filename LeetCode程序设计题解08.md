@@ -106,3 +106,33 @@ public:
     }
 };
 ```
+
+## 格雷码
+```C++
+class Solution {
+public:
+    /**
+     * @param n a number
+     * @return Gray code
+     */
+    vector<int> grayCode(int n) {
+        // Write your code here
+        vector<int> res;
+        if(n == 0) {
+            res.push_back(0);
+            return res;
+        }
+        if(n == 1) {
+            res.push_back(0);
+            res.push_back(1);
+            return res;
+        }
+        int nSize = 1 << n;
+        for(int i=0;i<nSize;i++) {
+            int grayCode = i ^ (i >> 1);
+            res.push_back(grayCode);
+        }
+        return res;
+    }
+};
+```
