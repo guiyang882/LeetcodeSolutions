@@ -136,3 +136,37 @@ public:
     }
 };
 ```
+## 堆化
+```C++
+class Solution {
+public:
+    /**
+     * @param A: Given an integer array
+     * @return: void
+     */
+    void helper(vector<int>& A, int i, int N) {
+        int nChild = i;
+        for(;2*i+1 < N;i = nChild) {
+            nChild = 2 * i + 1;
+            if(nChild < N-1 && A[nChild + 1] > A[nChild]) nChild++;
+            if(A[i] < A[nChild]) {
+                swap(A[i], A[nChild]);
+            } else {
+                break;
+            }
+        }
+    }
+    
+    void heapify(vector<int> &A) {
+        // write your code here
+        int N = A.size();
+        for(int i=N/2-1;i>=0;i--) {
+            helper(A, i, N);
+        }
+        for(int i=N-1;i>0;i--) {
+            swap(A[i], A[0]);
+            helper(A, 0, i);
+        }
+    }
+};
+```
