@@ -170,3 +170,47 @@ public:
     }
 };
 ```
+
+## IPO
+```C++
+bool cmp1(const pair<int,int> &a, const pair<int,int> &b) {
+    return a.second > b.second;
+}
+
+class Solution {
+public:
+    void show(const vector<pair<int,int>>& vals) {
+        for(auto a:vals) {
+            cout << a.second << " ";
+        }
+        cout << endl;
+    }
+    
+    int findMaximizedCapital(int k, int W, vector<int>& Profits, vector<int>& Capital) {
+        vector<pair<int,int>> hash;
+        for(int i=0;i<Capital.size();i++) {
+            // hash.push_back(pair<int, int>(Capital[i], Capital[i]+Profits[i]));
+            hash.push_back(pair<int, int>(Capital[i], Profits[i]));
+        }
+        sort(hash.begin(), hash.end(), cmp1);
+        vector<bool> status(Capital.size(),true);
+        while(k) {
+            bool selected = false;
+            for(int i=0;i<Capital.size();i++) {
+                if(status[i]) {
+                    if(W>=hash[i].first) {
+                        W += hash[i].second;
+                        status[i] = false;
+                        k--;
+                        selected = true;
+                        break;
+                    }
+                }
+            }
+            if(selected == false) break;
+        }
+        
+        return W;
+    }
+};
+```
