@@ -214,3 +214,46 @@ public:
     }
 };
 ```
+## 图中亮点之间的线路
+```C++
+/**
+ * Definition for Directed graph.
+ * struct DirectedGraphNode {
+ *     int label;
+ *     vector<DirectedGraphNode *> neighbors;
+ *     DirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param graph: A list of Directed graph node
+     * @param s: the starting Directed graph node
+     * @param t: the terminal Directed graph node
+     * @return: a boolean value
+     */
+    bool hasRoute(vector<DirectedGraphNode*> graph,
+                  DirectedGraphNode* s, DirectedGraphNode* t) {
+        
+        queue<DirectedGraphNode*> que;
+        map<DirectedGraphNode*, bool> visited;
+        
+        que.push(s);
+        visited[s] = true;
+        while(!que.empty()) {
+            DirectedGraphNode* tmp = que.front();
+            que.pop();
+            if(tmp == t) {
+                return true;
+            }
+            for(auto line:tmp->neighbors) {
+                if(!visited[line]) {
+                    que.push(line);
+                    visited[line] = true;
+                }
+            }
+        }
+        return false;
+    }
+};
+```
