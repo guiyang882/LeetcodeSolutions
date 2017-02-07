@@ -257,3 +257,26 @@ public:
     }
 };
 ```
+## 房屋染色
+```C++
+class Solution {
+public:
+    /**
+     * @param costs n x 3 cost matrix
+     * @return an integer, the minimum cost to paint all houses
+     */
+    int minCost(vector<vector<int>>& costs) {
+        // Write your code here
+        if(costs.size() == 0) return 0;
+        vector<int> record = costs[0];
+        for(int i=1;i<costs.size();i++) {
+            vector<int> tmp;
+            for(int k=0;k<3;k++) {
+                tmp.push_back(costs[i][k] + min(record[(k+1)%3], record[(k+2)%3]));
+            }
+            record = tmp;
+        }
+        return min(min(record[0], record[1]), record[2]);
+    }
+};
+```
