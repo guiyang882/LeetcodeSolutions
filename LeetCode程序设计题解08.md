@@ -332,3 +332,38 @@ private:
     queue<TreeNode*> que;
 };
 ```
+## 生成括号
+```C++
+class Solution {
+public:
+    /**
+     * @param n n pairs
+     * @return All combinations of well-formed parentheses
+     */
+    void helper(int n, int left, int right, string tmp) {
+        if(left>n || right>n || left < right) {
+            return ;
+        }
+        if(left == n) {
+            while(right != n) {
+                tmp += ')';
+                right++;
+            }
+            res.push_back(tmp);
+            return ;
+        }
+        helper(n, left+1, right, tmp+'(');
+        helper(n, left, right+1, tmp+')');
+    }
+    
+    vector<string> generateParenthesis(int n) {
+        // Write your code here
+        string tmp;
+        helper(n, 0, 0, tmp);
+        return res;
+    }
+    
+private:
+    vector<string> res;
+};
+```
