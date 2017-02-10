@@ -367,3 +367,53 @@ private:
     vector<string> res;
 };
 ```
+## 下一个排列
+```C++
+左边是原始排列，右边是对应的下一个排列。
+
+1,2,3 → 1,3,2
+
+3,2,1 → 1,2,3
+
+1,1,5 → 1,5,1
+```
+
+```C++
+class Solution {
+public:
+    /**
+     * @param nums: a vector of integers
+     * @return: return nothing (void), do not return anything, modify nums in-place instead
+     */
+    void nextPermutation(vector<int> &nums) {
+        // write your code here
+        //先从数组的末尾开始寻找，找到第一个降低的位置的数字
+        //然后在从后面找到的第一个比上一个折点大的位置，进行交换
+        //然后将从后向前的子序列进行逆转
+        
+        // 先找到从后到前的数组中降低的位置
+        int N = nums.size();
+        bool flag = false;
+        int index = 0;
+        for(int i=N-1;i>0;i--) {
+            if(nums[i]>nums[i-1]) {
+                index = i-1;
+                flag = true;
+                break;
+            }
+        }
+        if(flag == false) {
+            reverse(nums.begin(), nums.end());
+        }
+        if(flag == true) {
+            for(int i=N-1;i>index;i--) {
+                if(nums[i] > nums[index]) {
+                    swap(nums[i], nums[index]);
+                    break;
+                }
+            }
+            reverse(nums.begin()+index+1, nums.end());
+        }
+    }
+};
+```
