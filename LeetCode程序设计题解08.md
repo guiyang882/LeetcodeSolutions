@@ -464,3 +464,48 @@ private:
     vector<int> tmp;
 };
 ```
+## 给定一组数据，找到差值最大和最小的对数？
+```C++
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+    int N = 0;
+    while(cin >> N) {
+        vector<int> nums(N, 0);
+        for(int i=0;i<N;i++) {
+            cin >> nums[i];
+        }
+        sort(nums.begin(), nums.end());
+        if(nums[0] == nums[N-1]) {
+            int n = N*(N-1)/2;
+            cout << n << " " << n << endl;
+            continue;
+        }
+        int nMax = count(nums.begin(), nums.end(), nums[N-1]);
+        int nMin = count(nums.begin(), nums.end(), nums[0]);
+        int nMaxDiff = nMax * nMin;
+        int minDiff = nums[1] - nums[0], cnt = 0;
+        for(int i=1;i<N-1;i++) {
+            int tmp = nums[i+1] - nums[i];
+            if(tmp < minDiff) {
+                minDiff = tmp;   
+            }
+        }
+        for(int i=1;i<N;i++) {
+            for(int j=i-1;j>=0;j--) {
+                if(nums[i] - nums[j] == minDiff) {
+                    cnt++;
+                } else {
+                    break;
+                }
+            }
+        }
+        cout << cnt << " " << nMaxDiff << endl;
+    }
+    return 0;
+}
+```
