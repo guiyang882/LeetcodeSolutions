@@ -417,3 +417,50 @@ public:
     }
 };
 ```
+
+## Reverse Pairs
+```C++
+class Solution {
+public:
+    long long mergeArray(vector<int>& A, int left, int mid, int right) {
+        long long cnt = 0;
+        int l = left, r = mid+1;
+        while(l<=mid && r <= right) {
+            if((long long)A[l] > 2*(long long)A[r]) {
+                cnt += (mid - l + 1);
+                r++;
+            } else {
+                l++;
+            }
+        }
+        sort(A.begin()+left, A.begin()+right+1);
+        return cnt;
+    }
+    
+    long long helper(vector<int>& A, int l, int r) {
+        long long ans = 0;
+        if (l < r) {
+            int m = (l + r) >> 1;
+            ans += helper(A, l, m);
+            ans += helper(A, m + 1, r);
+            ans += mergeArray(A, l, m, r);
+        }
+        return ans;
+    }
+
+    int reversePairs(vector<int>& nums) {
+        
+        int N = nums.size();
+        if(N <= 1) return 0;
+        
+        tmp.resize(N, 0);
+        long long cnt = 0;
+        cnt = helper(nums, 0, N-1);
+        
+        return cnt;
+    }
+    
+private:
+    vector<int> tmp;
+};
+```
