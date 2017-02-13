@@ -509,3 +509,37 @@ int main() {
     return 0;
 }
 ```
+## 数组单调和
+```C++
+class MonoSum {
+public:
+    int helper(vector<int>& A, int left, int mid, int right) {
+        int i=left, j=mid+1;
+        int sum = 0;
+        while(i<=mid && j <=right) {
+            if(A[i] <= A[j]) {
+                sum += (A[i] * (right-j+1));
+                i++;
+            } else {
+                j++;
+            }
+        }
+        sort(A.begin()+left, A.begin()+right+1);
+        return sum;
+    }
+    
+    int mergeSort(vector<int> &A, int left, int right) {
+        if(left < right) {
+            int mid = (left + right) / 2;
+            int lSum = mergeSort(A, left, mid);
+            int rSum = mergeSort(A, mid+1, right);
+            return lSum + rSum + helper(A, left, mid, right);
+        } else 
+	        return 0;
+    }
+    
+    int calcMonoSum(vector<int> A, int n) {
+        return mergeSort(A, 0, n-1);
+    }
+};
+```
