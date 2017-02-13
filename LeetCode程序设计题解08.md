@@ -576,3 +576,66 @@ public:
     }
 };
 ```
+## 相邻最大差值
+```C++
+请设计一个复杂度为O(n)的算法，计算一个未排序数组中排序后相邻元素的最大差值。
+给定一个整数数组A和数组的大小n，请返回最大差值。保证数组元素个数大于等于2小于等于500。
+```
+
+```C++
+class MaxDivision {
+public:
+    int findMaxDivision(vector<int> A, int n) {
+    	// write code here
+        int minn = A[0];
+        int maxx = A[0];
+        for (int i = 1; i < n; i++)
+        {
+            if (A[i] > maxx)
+                maxx = A[i];
+            if (A[i] < minn)
+                minn = A[i];
+        }
+        // 分成maxx-minn+1个区间(桶)，每个区间只记录最大最小值
+        vector<int> vmin(n + 1, maxx);
+        vector<int> vmax(n + 1, minn);
+
+        // 最大数 单独一个桶
+        vmin[n] = maxx;
+        vmax[n] = maxx;
+
+        // 剩下的n-1个数用n个桶,桶区间大小
+        double bucket = 1.0 * (maxx - minn) / n;
+
+        // 处理每一个A[i]
+        for (int i = 0; i < n; i++)
+        {
+            if (A[i] == maxx)
+                continue;
+            int pos = (int)(1.0*(A[i] - minn) / bucket); // 得到元素的下标位置
+            if (A[i] < vmin[pos])
+            {
+                vmin[pos] = A[i];
+            }
+            if (A[i] > vmax[pos]){
+                vmax[pos] = A[i];
+            }
+        }
+
+        int rs = 0;
+        // 对于每个非空桶 其最小值减去前面桶的最大值 就是一个结果
+        int pre = 0; // 最小的那个值在第0号桶中
+        for (int i = 1; i <= n;i++)
+        {
+            if (vmin[i] == maxx && vmax[i] == minn) // 表示这是个空桶
+                continue;
+
+            if ((vmin[i] - vmax[pre]) > rs) // 对比找到结果
+                rs = (vmin[i] - vmax[pre]);
+            pre = i;
+        }
+        // 返回结果
+        return rs;
+    }
+};
+```
