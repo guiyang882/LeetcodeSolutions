@@ -543,3 +543,36 @@ public:
     }
 };
 ```
+## 数组中为出现的最下正整数
+```C++
+请设计一个高效算法，查找数组中未出现的最小正整数。
+给定一个整数数组A和数组的大小n，请返回数组中未出现的最小正整数。保证数组大小小于等于500。
+测试样例：
+[-1,2,3,4],4
+返回：1
+```
+
+```C++
+class ArrayMex {
+public:
+    int findArrayMex(vector<int> A, int n) {
+        // write code here
+        map<int, bool> hash;
+        for(auto a:A) {
+            if(a >= 1 && a <= 500) {
+                hash[a] = true;
+            }
+        }
+        int lowBound = 1;
+        for(auto item:hash) {
+            if(item.first > lowBound) {
+                return lowBound;
+            }
+            if(item.first == lowBound) {
+                lowBound++;
+            }
+        }
+        return lowBound;
+    }
+};
+```
