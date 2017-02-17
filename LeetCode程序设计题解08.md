@@ -639,3 +639,54 @@ public:
     }
 };
 ```
+## 合唱队问题
+```C++
+左右递归上升子序列
+```
+
+```C++
+#include <iostream>
+#include <vector>
+#include <math.h>
+
+using namespace std;
+
+int main () {
+    int N = 0;
+    while(cin >> N) {
+        vector<int> nums(N, 0);
+        for(int i=0;i<N;i++) {
+            cin >> nums[i];
+        }
+        
+        vector<int> left(N,1);
+        for(int i=0;i<N;i++) {
+            left[i] = 1;
+            for(int j=0;j<i;j++) {
+                if(nums[j] < nums[i] && left[i] < left[j] + 1) {
+                    left[i] = left[j] + 1;
+                }
+            }
+        }
+        
+        vector<int> right(N,1);
+        for(int i=N-1;i>=0;i--) {
+            right[i] = 1;
+            for(int j=N-1;j>i;j--) {
+                if(nums[j] < nums[i] && right[i] < right[j] + 1) {
+                    right[i] = right[j] + 1;
+                }
+            }
+        }
+        int t = 0, ind = 0;
+        for(int i=0;i<N;i++) {
+            if(t < left[i] + right[i]) {
+                t = left[i] + right[i];
+                ind = i;
+            }
+        }
+        cout << N - left[ind] - right[ind] + 1 << endl;
+    }
+    return 0;
+}
+```
