@@ -690,3 +690,51 @@ int main () {
     return 0;
 }
 ```
+## Beautiful Arrangement
+```C++
+class Solution {
+public:
+    void helper(vector<int> &flag, unordered_map<int, vector<int>> &hash, int level) {
+        if(level >= flag.size()) {
+            return ;
+        }
+        if(level == flag.size()-1) {
+            if(accumulate(flag.begin(), flag.end(), 0) == flag.size()) {
+                cnt++;
+                return ;
+            }
+        }
+        level++;
+        vector<int> tmp = hash[level];
+        for(auto item:tmp) {
+            if(flag[item] == false) {
+                flag[item] = true;
+                helper(flag, hash, level);
+                flag[item] = false;
+            }
+        }
+        level--;
+    }
+
+    int countArrangement(int N) {
+        cnt = 0;
+        unordered_map<int, vector<int>> hash;
+        for(int i=1;i<=N;i++) {
+            vector<int> tmp;
+            for(int j=1;j<=N;j++) {
+                if(i % j == 0 || j % i == 0) {
+                    tmp.push_back(j);
+                }
+            }
+            hash[i] = tmp;
+        }
+        vector<int> flag(N+1, 0);
+        flag[0] = 1;
+        helper(flag, hash, 0);
+        return cnt;
+    }
+    
+private:
+    int cnt;
+};
+```
