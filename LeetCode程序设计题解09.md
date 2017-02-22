@@ -31,3 +31,45 @@ public:
     }
 };
 ```
+## 最长回文字串
+```C++
+int longestPalindrome(string str) {
+    /*
+    dp[i][j] = 1, if(i == j)
+    dp[i][j] = 1, if(j == i + 1 && s[i] == s[j])
+    dp[i][j] = 1, if(j > i + 1 && s[i] == s[j] && dp[i+1][j-1])
+     */
+    // int N = str.size(), left = 0, right = 0, len = 0;
+    // vector<vector<bool>> dp(N, vector<bool>(N, false));
+    // for(int i=0;i<N;i++) {
+    //     dp[i][i] = true;
+    //     for(int j=0;j<i;j++) {
+    //         dp[j][i] = (str[j] == str[i] && (i-j<2 || dp[j+1][i-1]));
+    //         if(dp[j][i] && len < i-j+1) {
+    //             left = j;
+    //             right = i;
+    //             len = i - j + 1;
+    //         }
+    //     }
+    // }
+    // return len;
+    
+    /*
+    find the center of the paliindrome and find the radius
+    */
+    int N = str.size(), maxLen = 0, tmpLen = 0;
+    for(int c=0;c<N;c++) {
+        for(int r=0;(c-r >= 0 && c+r<N);r++) {
+            if(str[c-r] != str[c+r]) break;
+            tmpLen = r * 2 + 1;
+        }
+        if(tmpLen > maxLen) maxLen = tmpLen;
+        for(int r=0;(c-r >= 0 && c+r+1 < N);r++) {
+            if(str[c-r] != str[c+r+1]) break;
+            tmpLen = r * 2 + 2;
+        }
+        if(tmpLen > maxLen) maxLen = tmpLen;
+    }
+    return maxLen;
+}
+```
