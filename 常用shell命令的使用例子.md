@@ -182,3 +182,27 @@ kthreadd      2                   root  rtd   unknown                           
 通过 lsof -p pid | wc -l
 查看某个进程使用的文件资源的数量
 ```
+## netstat 日常命令
+```bash
+netstat -r route
+netstat -i ifconfig
+netstat -t tcp socket
+netstat -u udp socket
+netstat -a all running and monitoring socket
+fighter@pc:~$ netstat -i
+Kernel Interface table
+Iface   MTU Met   RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg
+br-b7e81db96382  1500 0         0      0      0 0             0      0      0      0 BMU
+docker0    1500 0    728239      0      0 0        987989      0      0      0 BMRU
+eno1       1500 0   5437905   1212      0 0       1931248      0      0      0 BMRU
+lo        65536 0  1179786874      0      0 0      1179786874      0      0      0 LRU
+vetha91e02b  1500 0    152293      0      0 0        226785      0      0      0 BMRU
+fighter@pc:~$ netstat -r
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+default         Hiwifi.lan      0.0.0.0         UG        0 0          0 eno1
+link-local      *               255.255.0.0     U         0 0          0 eno1
+172.17.0.0      *               255.255.0.0     U         0 0          0 docker0
+172.18.0.0      *               255.255.0.0     U         0 0          0 br-b7e81db96382
+192.168.199.0   *               255.255.255.0   U         0 0          0 eno1
+```
