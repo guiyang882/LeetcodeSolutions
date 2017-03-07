@@ -119,3 +119,72 @@ int main () {
     return 0;
 }
 ```
+## 维护数组X的秩
+```C++
+template <typename T>
+class BTreeNode {
+private:
+    BTreeNode<T> *_leftChild, *_rightChild;
+    T ele;
+	int leftsize;
+    
+public:
+    BTreeNode(const T &e) {
+        ele = e;
+        _leftChild = _rightChild = NULL;
+        leftsize = 0;
+    }
+
+    void insert(const T &e) {
+        if(e <= ele) {
+            if(_leftChild) {
+                _leftChild->insert(e);
+            } else {
+                _leftChild = new BTreeNode(e);
+            }
+            leftsize++;
+        } else {
+            if(_rightChild) {
+                _rightChild->insert(e);
+            } else {
+                _rightChild = new BTreeNode(e);
+            }
+        }
+    }
+    
+    int getRank(const T &e) {
+        if(e == ele) {
+            return leftsize;
+        }
+        if(e < ele) {
+            return _leftChild->getRank(e);
+        }
+        if(e > ele) {
+            return leftsize + 1 +  _rightChild->getRank(e);
+        }
+        return 0;
+    }
+};
+class Rank {
+public:
+    BTreeNode<int>* root;
+    int helper(int val) {
+        if(root == NULL) {
+            root = new BTreeNode<int>(val);
+        } else {
+            root->insert(val);
+        }
+        return root->getRank(val);
+    }
+    
+    vector<int> getRankOfNumber(vector<int> A, int n) {
+        // write code here
+        root = NULL;
+        vector<int> res(n, 0);
+        for(int i=0;i<A.size();i++) {
+            res[i] = helper(A[i]);
+        }
+        return res;
+    }
+};
+```
