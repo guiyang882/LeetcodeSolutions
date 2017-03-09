@@ -188,3 +188,70 @@ public:
     }
 };
 ```
+## 01翻转问题
+```
+牛牛正在挑战一款名为01翻转的游戏。游戏初始有A个0,B个1，牛牛的目标就是把所有的值都变为1，每次操作牛牛可以任意选择恰好K个数字，并将这K个数字的值进行翻转(0变为1，1变为0)。牛牛如果使用最少的操作次数完成这个游戏就可以获得奖品，牛牛想知道最少的操作次数是多少？
+例如:
+	A = 4 B = 0 K = 3 
+	0000 -> 1110 -> 1001 -> 0100 -> 1111 
+	需要的最少操作次数为4
+
+```
+
+```bash
+struct node {
+    int num_a, num_b, step;
+    node() {
+        step = 0;
+    }
+};
+
+bool status[200005] = {false};
+
+void helper(int a, int b , int k) {
+    if(a == 0) {
+        cout << 0 << endl;
+        continue;
+    }
+    if(a == k) {
+        cout << 1 << endl;
+        continue;
+    }
+    if(a + b < k) {
+        cout << -1 << endl;
+        continue;
+    }
+
+    queue<node> q;
+    while(!q.empty()) q.pop();
+    node cur, tem;
+    cur.num_a = a, cur.num_b = b;
+    memset(status, false, sizeof(status));
+    q.push(cur);
+    bool flag = false;
+    while(!q.empty()) {
+        cur = q.front();
+        q.pop();
+        if(cur.num_a == 0) {
+            cout << cur.step << endl;
+            flag = true;
+            break;
+        }
+        for(int i=k;i>0;i--) {
+            node tmp = cur;
+            if(tmp.num_a >= i && tmp.num_b >= (k-i)) {
+                tmp.num_a += (k - 2 * i);
+                tmp.num_b -= (k - 2 * i);
+                tmp.step++;
+                if(status[tmp.num_a] == false) {
+                    status[tmp.num_a] = true;
+                    q.push(tmp);
+                }
+            }
+        }
+    }
+    if(flag == false) {
+        cout << -1 << endl;
+    }
+}
+```
