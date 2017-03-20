@@ -308,3 +308,23 @@ private:
     } 
 };
 ```
+## Sliding Windows Maximum
+```c++
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& A, int k) {
+        int N = A.size();
+        vector<int> res;
+        deque<int> dp;
+        for(int i=0;i<N;i++) {
+            while(!dp.empty() && dp.back() < A[i]) dp.pop_back();
+            dp.push_back(A[i]);
+            if(i>=k-1) {
+                res.push_back(dp.front());
+                if(A[i-k+1] == dp.front()) dp.pop_front();
+            }
+        }
+        return res;
+    }
+};
+```
