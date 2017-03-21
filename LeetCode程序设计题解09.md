@@ -378,3 +378,46 @@ public:
     }
 };
 ```
+
+## 链表整数求和
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        vector<int> nums1, nums2;
+        while(l1) {
+            nums1.push_back(l1->val);
+            l1 = l1->next;
+        }
+        while(l2) {
+            nums2.push_back(l2->val);
+            l2 = l2->next;
+        }
+        int n1 = nums1.size(), n2 = nums2.size();
+        ListNode* head = NULL, *p = NULL;
+        int sum = 0, carray = 0;
+        for(int i=n1-1, j=n2-1; i>=0 || j>=0 || carray>0; i--,j--) {
+            sum = carray;
+            if(i>=0) {
+                sum += nums1[i];
+            }
+            if(j>=0) {
+                sum += nums2[j];
+            }
+            carray = sum / 10;
+            p = new ListNode(sum%10);
+            p->next = head;
+            head = p;
+        }
+        return head;
+    }
+};
+```
