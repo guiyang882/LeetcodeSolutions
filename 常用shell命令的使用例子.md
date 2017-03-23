@@ -206,3 +206,16 @@ link-local      *               255.255.0.0     U         0 0          0 eno1
 172.18.0.0      *               255.255.0.0     U         0 0          0 br-b7e81db96382
 192.168.199.0   *               255.255.255.0   U         0 0          0 eno1
 ```
+
+## how to fix the problem about the LC_LOCAL
+```bash
+## 安裝語系檔
+$ sudo locale-gen "en_US.UTF-8"
+## 重新設定語系檔
+$ sudo dpkg-reconfigure locales
+## 設定檔
+$ vim /etc/default/locale
+加入
+LC_ALL="en_US.UTF-8"
+然後我就會重新啟動 server，基本上就不會有錯誤了
+```
