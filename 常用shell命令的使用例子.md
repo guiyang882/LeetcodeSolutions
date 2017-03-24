@@ -219,3 +219,13 @@ $ vim /etc/default/locale
 LC_ALL="en_US.UTF-8"
 然後我就會重新啟動 server，基本上就不會有錯誤了
 ```
+
+## iostat/top
+```bash
+apt-get install sysstat
+iostat -d /dev/sda7/ {-m-k-g}
+watch -n 1 iostat -d /dev/sda7/ -m-k-g
+
+top -p pidNum
+watch -n 1 top -p 123456
+```
