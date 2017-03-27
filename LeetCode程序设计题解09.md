@@ -421,3 +421,43 @@ public:
     }
 };
 ```
+## Complex Number Multiplication
+```c++
+class LComplex {
+public:
+    explicit LComplex(const string & a) {
+        m_complex = a;
+        
+        realpart = 0;
+        imagepart = 0;
+        
+        int ind = a.find("+");
+        string r1 = a.substr(0, ind);
+        string r2 = a.substr(ind+1);
+        realpart = stoi(r1);
+        imagepart = stoi(r2.substr(0, r2.size()-1));
+    }
+    
+    friend string operator*(const LComplex& a, const LComplex& b) {
+        int n_real = b.realpart * a.realpart - b.imagepart * a.imagepart;
+        int n_image = b.realpart * a.imagepart + b.imagepart * a.realpart;
+        string res = to_string(n_real) + "+" + to_string(n_image) + "i";
+        return res;
+    }
+    
+public:
+    string m_complex;
+    int realpart;
+    int imagepart;
+};
+
+class Solution {
+public:
+    string complexNumberMultiply(string a, string b) {
+        LComplex ca(a);
+        LComplex cb(b);
+        string res = ca * cb;
+        return res;
+    }
+};
+```
