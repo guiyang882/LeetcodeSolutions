@@ -243,3 +243,11 @@ Here is a list of a few basic tmux commands:
 
 Other thing worth knowing is that scrolling is enabled by pressing Ctrl+b PgUp/PgDown. In fact, it enables the copy mode, which can also be done by pressing Ctrl+b [. When in copy mode, you can use PgUp/PgDown and arrow keys to scroll through the terminal contents. To (q)uit the copy mode, simply press the q key.
 ```
+
+---
+
+### how to pull the kubernets image
+```
+docker pull index.tenxcloud.com/google_containers/etcd:2.0.9
+docker pull index.tenxcloud.com/google_containers/hyperkube:v0.17.0
+```
