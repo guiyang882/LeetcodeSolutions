@@ -472,3 +472,60 @@ public:
     }
 };
 ```
+
+## Construct String from Binary
+```bash
+Input: Binary tree: [1,2,3,4]
+       1
+     /   \
+    2     3
+   /    
+  4     
+
+Output: "1(2(4))(3)"
+
+Explanation: Originallay it needs to be "1(2(4)())(3()())", 
+but you need to omit all the unnecessary empty parenthesis pairs. 
+And it will be "1(2(4))(3)".
+
+Input: Binary tree: [1,2,3,null,4]
+       1
+     /   \
+    2     3
+     \  
+      4 
+
+Output: "1(2()(4))(3)"
+
+Explanation: Almost the same as the first example, 
+except we can't omit the first parenthesis pair to break the one-to-one mapping relationship between the input and the output.
+```
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    string tree2str(TreeNode* t) {
+        if(t == NULL) return "";
+        
+        string s = to_string(t->val);
+        if(t->left) {
+            s += ("(" + tree2str(t->left) + ")");
+        } else if(t->right) {
+            s += "()";
+        }
+        if(t->right) {
+            s += ("(" + tree2str(t->right) + ")");
+        }
+        return s;
+    }
+};
+```
