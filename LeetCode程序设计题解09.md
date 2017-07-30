@@ -607,3 +607,51 @@ class Solution:
         # print(t_len)
         return max(file_len)
 ```
+
+## K组链表反转
+
+```
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param head a ListNode
+     * @param k an integer
+     * @return a ListNode
+     */
+    int getlen(ListNode* head) {
+        int n = 0;
+        while(head) {
+            head = head->next;
+            n++;
+        }
+        return n;
+    }
+    ListNode *reverseKGroup(ListNode *head, int k) {
+        // Write your code here
+        ListNode* cur = head;
+        ListNode *next = nullptr, *pre = nullptr;
+        int cnt = 0;
+        if(getlen(head) < k)
+            return cur;
+        while(cur && cnt < k) {
+            next = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = next;
+            cnt++;
+        }
+        if(next) {
+            head->next = reverseKGroup(next, k);
+        }
+        return pre;
+    }
+};
+```
