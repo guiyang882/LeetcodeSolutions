@@ -692,3 +692,44 @@ public:
     }
 };
 ```
+
+```C++
+class Solution {
+public:
+    /**
+     * @param stones a list of stones' positions in sorted ascending order
+     * @return true if the frog is able to cross the river or false
+     */
+    bool canCross(vector<int>& stones) {
+        // Write your code here
+        int k = 0;
+        map<pair<int, int>, bool> hash;
+        bool flag = helper(stones, 0, k, hash);
+        return flag;
+    }
+    
+    bool helper(vector<int> &stones, int idx, int k, map<pair<int, int>, bool> &hash) {
+        int len = stones.size();
+        if(idx == len - 1) return true;
+        for(int i=max(0,k-1);i<=k+1;i++) {
+            int nextJump = stones[idx] + i;
+            int nextPos = -1;
+            for(int j=idx+1;j<len;j++) {
+                if(stones[j] == nextJump) {
+                    nextPos = j;
+                    break;
+                }
+            }
+            if(nextPos > 0) {
+                if(hash.find(make_pair(nextPos, i)) == hash.end()) {
+                    bool f = helper(stones, nextPos, i, hash);
+                    hash[make_pair(nextPos, i)] = f;
+                }
+                
+                if(hash[make_pair(nextPos, i)]) return true;
+            }
+        }
+        return false;
+    }
+};
+```
