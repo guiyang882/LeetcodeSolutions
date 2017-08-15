@@ -82,3 +82,45 @@ public:
     }
 };
 ```
+
+## 最长回文子串
+```C++
+class Solution {
+public:
+    /*
+     * @param s: input string
+     * @return: the longest palindromic substring
+     */
+    string longestPalindrome(string s) {
+        // write your code here
+        int len = s.size();
+        if(len <= 1) return s;
+        vector<vector<bool>> dp(1000, vector<bool>(1000, false));
+        for(int i=0;i<1000;i++) {
+            dp[i][i] = true;
+        }
+        int startIdx = 0, maxlen = 0;
+        for(int i=0;i<len-1;i++) {
+            if(s[i] == s[i+1]) {
+                dp[i][i+1] = true;
+                startIdx = i;
+                maxlen = 2;
+            }
+        }
+        for(int k=3; k<=len; k++) {
+            for(int i=0;i<len-k+1;i++) {
+                int j = i+k-1;
+                if(s[i] == s[j] && dp[i+1][j-1]) {
+                    dp[i][j] = true;
+                    maxlen = k;
+                    startIdx = i;
+                }
+            }
+        }
+        if(maxlen >= 2) {
+            return s.substr(startIdx, maxlen);
+        }
+        return "";
+    }
+};
+```
