@@ -168,3 +168,35 @@ public:
     }
 };
 ```
+## 第K个排列
+```C++
+class Solution {
+public:
+    /*
+     * @param n: n
+     * @param k: the k th permutation
+     * @return: return the k-th permutation
+     */
+    string getPermutation(int n, int k) {
+        // write your code here
+        string res = "";
+        int prod = 1;
+        vector<int> nums(n, 0);
+        for(int i=0;i<n;i++) {
+            nums[i] = i + 1;
+            prod *= (i+1);
+        }
+        k--;
+        for(int i=0;i<n;i++) {
+            prod = prod / (n-i);
+            int c = k / prod;
+            res += ('0' + nums[c]);
+            for(int j=c;j<n-i;j++) {
+                nums[j] = nums[j+1];
+            }
+            k %= prod;
+        }
+        return res;
+    }
+};
+```
