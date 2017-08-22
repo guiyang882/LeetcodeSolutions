@@ -124,3 +124,47 @@ public:
     }
 };
 ```
+## 最大正方形
+```bash
+1 0 1 0 0
+1 0 1 1 1
+1 1 1 1 1
+1 0 0 1 0
+
+返回 4
+```
+
+```C++
+class Solution {
+public:
+    /**
+     * @param matrix: a matrix of 0 and 1
+     * @return: an integer
+     */
+    int maxSquare(vector<vector<int> > &matrix) {
+        // write your code here
+        int row = matrix.size();
+        if (row == 0) return 0;
+        int col = matrix[0].size();
+        vector<vector<int>> dp(row, vector<int>(col, 0));
+        for(int i=0;i<row;i++) {
+            dp[i][0] = matrix[i][0];
+        }
+        for(int i=0;i<col;i++) {
+            dp[0][i] = matrix[0][i];
+        }
+        int max_len = dp[0][0];
+        for(int i=1;i<row;i++) {
+            for(int j=1;j<col;j++) {
+                if(matrix[i][j] == 1) {
+                    dp[i][j] = min(min(dp[i-1][j], dp[i][j-1]), dp[i-1][j-1]) + 1;
+                    max_len = max(max_len, dp[i][j]);
+                } else {
+                    dp[i][j] = 0;
+                }
+            }
+        }
+        return max_len * max_len;
+    }
+};
+```
