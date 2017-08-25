@@ -200,3 +200,55 @@ public:
     }
 };
 ```
+
+## 和为零的子矩阵
+```
+[
+  [1 ,5 ,7],
+  [3 ,7 ,-8],
+  [4 ,-8 ,9],
+]
+```
+返回 [(1,1), (2,2)]
+
+```C++
+class Solution {
+public:
+    /**
+     * @param matrix an integer matrix
+     * @return the coordinate of the left-up and right-down number
+     */
+    vector<vector<int>> submatrixSum(vector<vector<int>>& matrix) {
+        // Write your code here
+        vector<vector<int>> res(2, vector<int>(2, 0));
+        int row = matrix.size();
+        if(row == 0) return res;
+        int col = matrix[0].size();
+        vector<vector<int>> dp(row+1, vector<int>(col+1, 0));
+        for(int i=0;i<=row;i++) dp[i][0] = 0;
+        for(int i=0;i<=col;i++) dp[0][i] = 0;
+        for(int i=0;i<row;i++) {
+            for(int j=0;j<col;j++) {
+                dp[i+1][j+1] = matrix[i][j] + dp[i+1][j] + dp[i][j+1] - dp[i][j];
+            }
+        }
+        for(int l=0;l<row;l++) {
+            for(int h=l+1;h<=row;h++) {
+                unordered_map<int, int> hash;
+                for(int j=0;j<=col;j++) {
+                    int diff = dp[h][j] - dp[l][j];
+                    if(hash.find(diff) != hash.end()) {
+                        int k = hash[diff];
+                        res[0][0] = l, res[0][1] = k;
+                        res[1][0] = h-1, res[1][1] = j-1;
+                        return res;
+                    } else {
+                        hash[diff] = j;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
+```
